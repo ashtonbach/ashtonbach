@@ -46,10 +46,14 @@
        branch detail only reads once the tree is large, so it is allowed to
        run off both edges. */
     .tree {
-      position: absolute;
+      /* fixed, not absolute: iOS lays fixed elements out against the LARGE
+         viewport, so the tree still covers the strip behind Safari's
+         collapsing toolbar. translateY is a percentage of the tree's own
+         height, so no vh unit is involved anywhere. */
+      position: fixed;
       left: 50%;
-      bottom: -4vh;
-      transform: translateX(-50%);
+      bottom: 0;
+      transform: translateX(-50%) translateY(3%);
       /* max() so the tree also covers tall portrait viewports, not just wide ones */
       width: min(max(140vw, 170vh), 2600px);
       height: auto;
@@ -110,7 +114,7 @@
        blows up until it stops reading as a tree. Landscape falls back to the
        base rule above, which is driven by max(vw, vh). */
     @media (max-width: 834px) and (orientation: portrait) {
-      .tree { width: 300vw; bottom: -8vh; opacity: 0.085; }
+      .tree { width: 300vw; transform: translateX(-50%) translateY(9%); opacity: 0.085; }
     }
 
     /* Short viewports (phone in landscape). Drive the lockup off height so it
